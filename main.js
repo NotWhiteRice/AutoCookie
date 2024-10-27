@@ -1,7 +1,11 @@
 if(AutoCookie === undefined) var AutoCookie = {};
 
+AutoCookie.repoURL = "https://github.com/NotWhiteRice/AutoCookie"
+AutoCookie.modVersion = 1
+AutoCookie.gameVersion = 2.052
+
 var acModules = [
-    //"bot-main.js"
+    AutoCookie.repoURL + "/autocookie-main.js"
 ]
 
 AutoCookie.loader = setInterval(function () {
