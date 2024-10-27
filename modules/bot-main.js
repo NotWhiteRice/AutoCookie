@@ -7,21 +7,6 @@ AutoCookie.windowH = 0;
 AutoCookie.bestPurchase = "";
 AutoCookie.purchaseType = "";
 
-AutoCookie.registerMod = function() {
-    Game.registerMod("autoCookie", {
-        init:function() {
-            AutoCookie.startScript();
-    
-            if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required", [16,5])
-    
-            if(AutoCookie.interval != 0) Game.Notify(`AutoCookie successfully loaded!`,'',[16,5])
-            else Game.Notify(`Unable to load AutoCookie`,'',[16,5])
-        },
-        save:function() {},
-        load:function() {},
-    })
-}
-
 AutoCookie.startScript = function() {
     AutoCookie.interval = setInterval(AutoCookie.runScript, 1);
 }
@@ -76,7 +61,6 @@ AutoCookie.runScript = function() {
         if(Game.cookiesPs == 0) {
             AutoCookie.bestPurchase = "Cursor"
             AutoCookie.purchaseType = "Building"
-            Game.Notify("AutoCookie prompt", "Waiting to purchase " + AutoCookie.bestPurchase, [16,5])
         } else {
             let bestPayout = 0
             let sendPrompt = false
