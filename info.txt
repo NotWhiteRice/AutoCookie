@@ -1,0 +1,11 @@
+{
+	"Name": "AutoCookie",
+	"ID": "AutoCookie",
+	"Author": "NotWhiteRice",
+	"Description": "A script that gets all of the Steam achievements for you!",
+	"ModVersion": 1,
+	"GameVersion": 2.052,
+	"Date": "13/08/2021",
+	"Dependencies": [],
+	"Disabled": 1
+}
