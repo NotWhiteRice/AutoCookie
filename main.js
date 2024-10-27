@@ -45,6 +45,7 @@ AutoCookie.loader.fetchDependencies = function() {
 
     loader.addModule("autocookie-init.js", true)
     loader.addModule("bot-main.js", true)
+    loader.addModule("autocookie-menu.js", false)
 
     loader.fetchDependency(0)
 

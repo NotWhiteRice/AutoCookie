@@ -1,3 +1,10 @@
+AutoCookie.hasModule = function(name) {
+    for(const module of AutoCookie.loader.dependencies) {
+        if(module.name == name) return module.isLoaded
+    }
+    return false
+}
+
 AutoCookie.registerMod = function() {
     if(AutoCookie.loader.errorCode == 2) {
         Game.Notify('AutoCookie timed out', 'Took longer too long to fetch dependencies', [32, 0])
@@ -14,12 +21,12 @@ AutoCookie.registerMod = function() {
     })
     if(failedModules != "") {
         Game.Notify('AutoCookie prompt', 'Unable to load dependencies--'+failedModules, [32, 0]);
-    }
-    if(missingNeeded) {
-        Game.Notify('AutoCookie error', 'Shutting down AutoCookie since a necessary dependency was not found', [32, 0]);
-        return
-    } else if(missingNeeded) {
-        Game.Notify('AutoCookie warning', 'Resuming AutoCookie, but some features might be disabled', [32, 0]);
+        if(missingNeeded) {
+            Game.Notify('AutoCookie error', 'Shutting down AutoCookie since a necessary dependency was not found', [32, 0]);
+            return
+        } else {
+            Game.Notify('AutoCookie warning', 'Resuming AutoCookie, but some features might be disabled', [32, 0]);
+        }
     }
     
     Game.registerMod("autoCookie", {

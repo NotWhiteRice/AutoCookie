@@ -35,8 +35,8 @@ AutoCookie.openMenu = function(name) {
 }
 
 AutoCookie.clickNewsTicker = function() {
-    if(!AutoCookie.onMainScreen() ) return
-    document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['comments'].children[4].children[0].click()
+    if(!AutoCookie.onMainScreen()) return
+    document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['comments'].children['commentsText'].children['commentsText1'].click()
 }
 
 AutoCookie.calcBuildingPayout = function(building) {
@@ -74,7 +74,7 @@ AutoCookie.runScript = function() {
                     sendPrompt = true
                 }
             })
-            if(sendPrompt) Game.Notify("AutoCookie prompt", "Waiting to purchase " + AutoCookie.bestPurchase, [16,5])
+            if(sendPrompt) Game.Notify("AutoCookie prompt", "Waiting to purchase " + AutoCookie.bestPurchase, [6,6])
         }
 
         if(AutoCookie.purchaseType == "Building" && AutoCookie.bestPurchase != "") {
@@ -94,18 +94,22 @@ AutoCookie.clickGCs = function() {
 
 AutoCookie.navigateMenus = function() {
     const activeMenu = Game.onMenu;
-    if(!Game.HasAchiev('Tiny cookie')) {
+    if(!Game.HasAchiev('Tiny cookie') || !Game.HasAchiev('Here you go')) {
         AutoCookie.openMenu('stats')
-        document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['centerArea'].children['menu'].children[2].children['statsGeneral'].children[0].children[1].children[0].click()
-    }
-    if(!Game.HasAchiev('Here you go')) {
-        AutoCookie.openMenu('stats')
-        let list = document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['centerArea'].children['menu'].children[5].children[1].children[5]
-        for(i = 0; i < list.children.length; i++) list.children[i].click();
+        let statsPage = document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['centerArea'].children['menu']
+        let statsSections = statsPage.getElementsByClassName("subsection")
+        let generalStats = undefined
+        let achievements = undefined
+        for(const section of statsSections) {
+            if(section.getElementsByClassName("title")[0].innerHTML == "General") generalStats = section
+            if(section.getElementsByClassName("title")[0].innerHTML == "Achievements") achievements = section  
+        }
+        if(generalStats === undefined) {} else if(!Game.HasAchiev('Tiny cookie')) generalStats.children['statsGeneral'].getElementsByClassName("listing")[0].getElementsByClassName("price plain")[0].getElementsByClassName("tinyCookie")[0].click()
+        if(achievements === undefined) {} else if(!Game.HasAchiev('Here you go')) for(const achiev of achievements.children['statsAchievs'].getElementsByClassName("listing crateBox")[0].children) { achiev.click() }
     }
     if(!Game.HasAchiev('Olden days')) {
         AutoCookie.openMenu('log')
-        document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['centerArea'].children['menu'].children['oldenDays'].children[0].click()
+        document.body.children['wrapper'].children['game'].children['sectionMiddle'].children['centerArea'].children['menu'].children['oldenDays'].getElementsByClassName("icon")[0].click()
     }
     if(Game.onMenu != activeMenu) AutoCookie.openMenu(activeMenu);
     if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) {
@@ -136,14 +140,14 @@ AutoCookie.navigateMenus = function() {
         const bakery = Game.bakeryName
         Game.bakeryNameL.click()
         document.activeElement.value="Orteil"
-        Game.promptL.children[1].children[0].click()
+        Game.promptL.getElementsByClassName("optionBox")[0].children['promptOption0'].click()
         Game.bakeryNameL.click()
         document.activeElement.value=bakery
-        Game.promptL.children[1].children[0].click()
+        Game.promptL.getElementsByClassName("optionBox")[0].children['promptOption0'].click()
     }
     if(Game.bakeryName == "Orteil") {
         Game.bakeryNameL.click()
         document.activeElement.value=Game.GetBakeryName()
-        Game.promptL.children[1].children[0].click()
+        Game.promptL.getElementsByClassName("optionBox")[0].children['promptOption0'].click()
     }
 }
