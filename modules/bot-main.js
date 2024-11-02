@@ -1,3 +1,28 @@
+/*
+-----------------------------------------------
+    Rather annoying unfinished garden script
+-----------------------------------------------
+
+
+AutoCookie.interval = 0
+AutoCookie.pauseBots = false
+AutoCookie.killBots = false
+
+AutoCookie.onInit = function() {
+    if(AutoCookie.hasModule('bot-garden.js')) AutoCookie.interval = setInterval(AutoCookie.gardenHelper.tick, 1000)
+
+    if(AutoCookie.interval != 0) Game.Notify(`AutoCookie successfully loaded!`,'',[16,5])
+    else Game.Notify(`Unable to load AutoCookie`,'',[16,5])
+
+    Game.Notify('Notice', 'AutoCookie requires menus be closed at this time', [32,0])
+}
+*/
+
+/*
+---------------------------------------------------------
+   Crude script with auto-buy and getting miscellaneous achievements
+---------------------------------------------------------
+*/
 AutoCookie.interval = 0;
 AutoCookie.pauseBot = false;
 AutoCookie.killBot = false;
@@ -7,8 +32,16 @@ AutoCookie.windowH = 0;
 AutoCookie.bestPurchase = "";
 AutoCookie.purchaseType = "";
 
-AutoCookie.startScript = function() {
+AutoCookie.testCPS = false
+AutoCookie.isTesting = false
+
+AutoCookie.onInit = function() {
     AutoCookie.interval = setInterval(AutoCookie.runScript, 1);
+
+    if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required", [11,14])
+    
+    if(AutoCookie.interval != 0) Game.Notify(`AutoCookie successfully loaded!`,'',[16,5])
+    else Game.Notify(`Unable to load AutoCookie`,'',[16,5])
 }
 
 AutoCookie.onMainScreen = function() {
@@ -40,10 +73,9 @@ AutoCookie.clickNewsTicker = function() {
 }
 
 AutoCookie.calcBuildingPayout = function(building) {
-    let cps = Game.cookiesPs
     let price = building.price
     let gain = building.cps(building)
-    return (price/gain) + (price/cps)
+    return (price/gain) + (Math.max(price-Game.cookies, 0)/Game.cookiesPs)
 }
 
 AutoCookie.runScript = function() {
@@ -57,6 +89,15 @@ AutoCookie.runScript = function() {
     if(AutoCookie.onMainScreen()) {
         if(Game.shimmers.length > 0) AutoCookie.clickGCs()
         AutoCookie.navigateMenus()
+
+        if(AutoCookie.testCPS) {
+            let timeout = 0
+            if(!AutoCookie.isTesting) {
+                timeout = setTimeout(() => {AutoCookie.testCPS = false}, 1000)
+                AutoCookie.isTesting = true
+            }
+            Game.ClickCookie()
+        }
 
         if(Game.cookiesPs == 0) {
             AutoCookie.bestPurchase = "Cursor"
@@ -74,7 +115,7 @@ AutoCookie.runScript = function() {
                     sendPrompt = true
                 }
             })
-            if(sendPrompt) Game.Notify("AutoCookie prompt", "Waiting to purchase " + AutoCookie.bestPurchase, [6,6])
+            //if(sendPrompt) Game.Notify("AutoCookie prompt", "Waiting to purchase " + AutoCookie.bestPurchase, [6,6])
         }
 
         if(AutoCookie.purchaseType == "Building" && AutoCookie.bestPurchase != "") {

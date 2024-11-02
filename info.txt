@@ -3,9 +3,11 @@
 	"ID": "AutoCookie",
 	"Author": "NotWhiteRice",
 	"Description": "A script that gets all of the Steam achievements for you!",
-	"ModVersion": 1,
+	"ModVersion": 4,
 	"GameVersion": 2.052,
-	"Date": "13/08/2021",
+	"Date": "27/10/2024",
 	"Dependencies": [],
-	"Disabled": 1
+	"Disabled": 1,
+	"Workshop": 3355990883,
+	"AllowSteamAchievs": 1
 }
