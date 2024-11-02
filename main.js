@@ -1,6 +1,6 @@
 if(AutoCookie === undefined) var AutoCookie = {};
 
-AutoCookie.DEV = true
+AutoCookie.DEV = false
 AutoCookie.modVersion = 5
 AutoCookie.gameVersion = 2.052
 if(AutoCookie.errorCode === undefined) AutoCookie.errorCode = 0
@@ -28,7 +28,7 @@ AutoCookie.loader.timeoutDuration = 5000
 
     class Module extends Script {
         constructor(name, isNeeded) {
-            super(name, `../mods/${AutoCookie.DEV ? `local` : `workshop`}/AutoCookie/modules/` + name, isNeeded)
+            super(name, `${AutoCookie.DEV ? `../mods/local/AutoCookie` : `https://github.com/NotWhiteRice/AutoCookie/tree/main`}/modules/${name}`, isNeeded)
         }
     }
 
@@ -111,7 +111,7 @@ AutoCookie.loader.timeoutDuration = 5000
                             }
                         }, 1);
 
-                        if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required", [11,14])
+                        if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', !!App ? "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required" : "AutoCookie is unable to get 'Cookie-dunker' or 'Stifling the press' unless launched on the Steam version of Cookie Clicker", [11,14])
 
                         if(AutoCookie.isRunning()) Game.Notify(`AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion} successfully loaded!`,'',[16,5])
                         else Game.Notify(`Unable to load AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion}`,'',[16,5])
