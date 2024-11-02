@@ -27,9 +27,6 @@ AutoCookie.pauseBot = false;
 AutoCookie.bestPurchase = "";
 AutoCookie.purchaseType = "";
 
-AutoCookie.testCPS = false
-AutoCookie.isTesting = false
-
 AutoCookie.calcBuildingPayout = function(building) {
     let price = building.price
     let gain = building.cps(building)
@@ -42,21 +39,6 @@ AutoCookie.runScript = function() {
     AutoCookie.tick()
 
     if(AutoCookie.isOnMainScreen()) {
-        if(Game.shimmers.length > 0) AutoCookie.clickGCs()
-
-        if(AutoCookie.testCPS) {
-            let timeout = 0
-            if(!AutoCookie.isTesting) {
-                timeout = setTimeout(() => {AutoCookie.testCPS = false}, 1000)
-                AutoCookie.isTesting = true
-            }
-            Game.ClickCookie()
-        }
-
-        if(Game.cookiesPs > 100 && !Game.HasAchiev(`Just wrong`)) {
-            if(Game.Objects.Grandma.amount >= 1) Game.Objects.Grandma.sell(1)
-        }
-
         if(Game.cookiesPs == 0) {
             AutoCookie.bestPurchase = "Cursor"
             AutoCookie.purchaseType = "Building"
@@ -80,13 +62,4 @@ AutoCookie.runScript = function() {
             if(Game.cookies >= Game.Objects[AutoCookie.bestPurchase].price) Game.Objects[AutoCookie.bestPurchase].buy(1)
         }        
     }
-}
-
-AutoCookie.clickGCs = function() {
-    Game.shimmers.forEach(function(shimmer) {
-        if(shimmer.type == "golden" && shimmer.wrath == 0) {
-            if(Game.HasAchiev('Fading luck')) shimmer.pop()
-            else if(shimmer.life < 30) shimmer.pop()
-        } else if(shimmer.type == "golden" && !Game.HasAchiev('Wrath cookie')) shimmer.pop()
-    })
 }
