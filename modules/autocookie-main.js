@@ -5,7 +5,7 @@
 
     AutoCookie.tick = function() {
         if(AutoCookie.errorCode != 0) {
-            AutoCookie.killBot = true
+            AutoCookie.pauseBot = true
             AutoCookie.kill()
             return
         }

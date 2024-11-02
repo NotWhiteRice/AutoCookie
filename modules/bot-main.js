@@ -24,7 +24,6 @@ AutoCookie.onInit = function() {
 ---------------------------------------------------------
 */
 AutoCookie.pauseBot = false;
-AutoCookie.killBot = false;
 AutoCookie.bestPurchase = "";
 AutoCookie.purchaseType = "";
 
@@ -45,11 +44,6 @@ AutoCookie.calcBuildingPayout = function(building) {
 }
 
 AutoCookie.runScript = function() {
-    if(AutoCookie.killBot) {
-        clearInterval(AutoCookie.interval)
-        AutoCookie.interval = 0
-        return
-    }
     if(AutoCookie.pauseBot) return
 
     AutoCookie.tick()
