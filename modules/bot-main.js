@@ -99,6 +99,10 @@ AutoCookie.runScript = function() {
             Game.ClickCookie()
         }
 
+        if(Game.cookiesPs > 100 && !Game.HasAchiev(`Just wrong`)) {
+            if(Game.Objects.Grandma.amount >= 1) Game.Objects.Grandma.sell(1)
+        }
+
         if(Game.cookiesPs == 0) {
             AutoCookie.bestPurchase = "Cursor"
             AutoCookie.purchaseType = "Building"

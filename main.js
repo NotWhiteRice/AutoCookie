@@ -115,6 +115,7 @@ AutoCookie.loader.timeoutDuration = 5000
             let msg = ``
             const errorCode = AutoCookie.loader.errorCode
 
+            if(errorCode == 0) msg = `Something went wrong while fetching dependencies--check console for further details`
             if(errorCode == 1) {
                 let dependency = ``
                 for(i = 0; i < dependencies.length; i++) {
