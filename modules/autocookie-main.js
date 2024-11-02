@@ -29,19 +29,21 @@
 
         if(AutoCookie.isOnMainScreen()) {
             let clickLimit = -1, cookieLimit = -1, timeLimit = -1
-            if(!Game.HasAchiev(`Speed baking I`)) timeLimit = 35
-            if(!Game.HasAchiev(`Speed baking II`)) timeLimit = 25
-            if(!Game.HasAchiev(`Speed baking III`)) timeLimit = 15
-            if(timeLimit != -1) cookieLimit = 1000000
-            if(!Game.HasAchiev(`Neverclick`) && Game.cookieClicks <= 15) clickLimit = 15
-            if(!Game.HasAchiev(`True Neverclick`) && Game.cookieClicks == 0) clickLimit = 0
-            if(clickLimit != -1) {
-                cookieLimit = 1000000
-                timeLimit = -1
-            }
-            if(!Game.HasAchiev(`Hardcore`)) {
-                cookieLimit = 1000000000
-                timeLimit = -1
+            if(Game.ascensionMode==1 || Game.resets==0) {
+                if(!Game.HasAchiev(`Speed baking I`)) timeLimit = 35
+                if(!Game.HasAchiev(`Speed baking II`)) timeLimit = 25
+                if(!Game.HasAchiev(`Speed baking III`)) timeLimit = 15
+                if(timeLimit != -1) cookieLimit = 1000000
+                if(!Game.HasAchiev(`Neverclick`) && Game.cookieClicks <= 15) clickLimit = 15
+                if(!Game.HasAchiev(`True Neverclick`) && Game.cookieClicks == 0) clickLimit = 0
+                if(clickLimit != -1) {
+                    cookieLimit = 1000000
+                    timeLimit = -1
+                }
+                if(!Game.HasAchiev(`Hardcore`) && Game.UpgradesOwned == 0) {
+                    cookieLimit = 1000000000
+                    timeLimit = -1
+                }
             }
 
             if((Game.ascensionMode==0 && Game.resets!=0) || Game.cookiesEarned > 1100000 || Game.cookieClicks > clickLimit) {
