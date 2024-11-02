@@ -33,8 +33,8 @@
             if(!Game.HasAchiev(`Speed baking II`)) timeLimit = 25
             if(!Game.HasAchiev(`Speed baking III`)) timeLimit = 15
             if(timeLimit != -1) cookieLimit = 1000000
-            if(!Game.HasAchiev(`Neverclick`)) clickLimit = 15
-            if(!Game.HasAchiev(`True Neverclick`)) clickLimit = 0
+            if(!Game.HasAchiev(`Neverclick`) && Game.cookieClicks <= 15) clickLimit = 15
+            if(!Game.HasAchiev(`True Neverclick`) && Game.cookieClicks == 0) clickLimit = 0
             if(clickLimit != -1) {
                 cookieLimit = 1000000
                 timeLimit = -1
