@@ -23,9 +23,9 @@
 
         if(Date.now() > clicksClock + 1000) {
             clicksClock = Date.now()
-            let newLength = trackedClicks.push(runningClicks)
+            trackedClicks.push(runningClicks)
             runningClicks = 0
-            while(newLength > secsToTrackClicks) trackedClicks.shift()
+            while(trackedClicks.length > secsToTrackClicks) trackedClicks.shift()
             clicksPerSecond = 0
             for(const val of trackedClicks) clicksPerSecond += val
             clicksPerSecond /= trackedClicks.length
