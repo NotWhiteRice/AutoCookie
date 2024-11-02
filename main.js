@@ -3,13 +3,20 @@ if(AutoCookie === undefined) var AutoCookie = {};
 AutoCookie.DEV = true
 AutoCookie.modVersion = 5
 AutoCookie.gameVersion = 2.052
-AutoCookie.dependencies = []
 
 AutoCookie.loader = {}
 AutoCookie.loader.errorCode = 0
 AutoCookie.loader.timeoutDuration = 5000
 
 {
+    let dependencies = []
+
+    AutoCookie.hasDependency = function(name) {
+        return dependencies.filter((dep) => {
+            return dep.name == name && dep.isLoaded
+        }).length != 0
+    }
+
     class Script {
         isLoaded = false
         errorCode = 0
@@ -17,7 +24,7 @@ AutoCookie.loader.timeoutDuration = 5000
             this.name = name
             this.src = src
             this.isNeeded = isNeeded
-            AutoCookie.dependencies.push(this)
+            dependencies.push(this)
         }
 
         failed() { return !this.isLoaded && this.errorCode != 0 }
@@ -45,11 +52,10 @@ AutoCookie.loader.timeoutDuration = 5000
     }
 
     let fetchAndLoad = function() {
-        Game.Notify(`ACLoader--fetching dependencies`, `Fetching ${AutoCookie.dependencies.length} dependencies`, [32, 0])
+        Game.Notify(`ACLoader--fetching dependencies`, `Fetching ${dependencies.length} dependencies`, [32, 0])
 
         let promise = new Promise((resolve, reject) => {
             let instance = AutoCookie.loader
-            let dependencies = AutoCookie.dependencies
 
             const timeout = setTimeout(() => {
                 console.log(`AutoCookie--Unable to fetch dependencies within ${instance.timeoutDuration}ms`)
@@ -58,7 +64,7 @@ AutoCookie.loader.timeoutDuration = 5000
 
             let loadPromises = dependencies.map((dependency) => {
                 return new Promise((depResolve, depReject) => {
-                    if(instance.errorCode != 0) reject(new Error(`Encountered error code ${instance.errorCode} while fetching dependencies`))
+                    if(instance.errorCode != 0) depReject(new Error(`Encountered error code ${instance.errorCode} while fetching dependencies`))
                     
                     const script = document.createElement(`script`)
                     script.src = dependency.src
@@ -91,23 +97,28 @@ AutoCookie.loader.timeoutDuration = 5000
                     reject(error)
                 })
         }).then((result) => {
-            let failedModules = AutoCookie.dependencies.filter(dep => dep.failed()).map(dep => `'${dep.name}'`).join(", ")
+            let failedModules = dependencies.filter(dep => dep.failed()).map(dep => `'${dep.name}'`).join(", ")
 
             if(failedModules) Game.Notify('AutoCookie prompt', `Missing non-essential dependencies--${failedModules}. Certain features may be disabled`, [32, 0]);
 
-            Game.registerMod("autoCookie", {
-                init:function() { AutoCookie.onInit(); },
-                save:function() {},
-                load:function() {},
-            })
+            try {
+                Game.registerMod("autoCookie", {
+                    init:function() { AutoCookie.onInit(); },
+                    save:function() {},
+                    load:function() {},
+                })
+            } catch(error) {
+                AutoCookie.loader.errorCode = 3
+                throw error
+            }
         }).catch((error) => {
             let msg = ``
             const errorCode = AutoCookie.loader.errorCode
 
             if(errorCode == 1) {
                 let dependency = ``
-                for(i = 0; i < AutoCookie.dependencies.length; i++) {
-                    let value = AutoCookie.dependencies[i]
+                for(i = 0; i < dependencies.length; i++) {
+                    let value = dependencies[i]
                     if(value.isNeeded && value.failed()) {
                         dependency = value.name
                         break
@@ -115,7 +126,7 @@ AutoCookie.loader.timeoutDuration = 5000
                 }
                 msg = `Failed to load a critical dependency--${dependency}`
             } else if(errorCode == 2) msg = `Unable to fetch dependencies within ${AutoCookie.loader.timeoutDuration}ms`
-            //else if(errorCode == 3) msg = `Encountered a runtime error when executing a dependency--check console for further details`
+            else if(errorCode == 3) msg = `Encountered a runtime error when executing AutoCookie--check console for further details`
             else msg = `Encountered unknown error code: ${errorCode} while fetching dependencies--check console for further details`
 
             Game.Notify(`ACLoader error code: ${AutoCookie.loader.errorCode}`, msg, [32, 20])
