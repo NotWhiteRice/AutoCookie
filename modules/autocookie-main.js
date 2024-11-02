@@ -47,4 +47,8 @@
             })
         }
     }
+
+    AutoCookie.clicksPerSec = function() {
+        return clicksPerSecond;
+    }
 }
