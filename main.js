@@ -4,8 +4,8 @@ AutoCookie.DEV = true
 AutoCookie.modVersion = 5
 AutoCookie.gameVersion = 2.052
 
-AutoCookie.loader = {}
-AutoCookie.loader.errorCode = 0
+if(AutoCookie.loader === undefined) AutoCookie.loader = {}
+if(AutoCookie.loader.errorCode === undefined) AutoCookie.loader.errorCode = 0
 AutoCookie.loader.timeoutDuration = 5000
 
 {
@@ -117,8 +117,9 @@ AutoCookie.loader.timeoutDuration = 5000
             let msg = ``
             const errorCode = AutoCookie.loader.errorCode
 
+            if(errorCode < 0) msg = `AutoCookie was provided with error code ${errorCode}, which is reserved for mod compatibility purposes`
             if(errorCode == 0) msg = `Something went wrong while fetching dependencies--check console for further details`
-            if(errorCode == 1) {
+            else if(errorCode == 1) {
                 let dependency = ``
                 for(i = 0; i < dependencies.length; i++) {
                     let value = dependencies[i]
