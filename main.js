@@ -43,10 +43,9 @@ AutoCookie.loader.timeoutDuration = 5000
     }, 1000);
 
     let declareDeps = function() {
-        new Module(`bot-main.js`, true)
         new Module(`autocookie-menuing.js`, false)
         new Module(`autocookie-main.js`, true)
-        new Module(`bot-garden.js`, false)
+        //new Module(`bot-garden.js`, false)
     }
 
     let fetchAndLoad = function() {
@@ -104,7 +103,7 @@ AutoCookie.loader.timeoutDuration = 5000
                     init:function() {
                         interval = setInterval(() => {
                             try {
-                                AutoCookie.runScript()
+                                AutoCookie.tick()
                             } catch(error) {
                                 AutoCookie.errorCode = 4
                                 AutoCookie.kill()

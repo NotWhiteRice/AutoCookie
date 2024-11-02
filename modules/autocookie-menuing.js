@@ -82,7 +82,6 @@
             if((window.screenX != 0 || window.screenY != 0) && STPtries < 10) {
                 window.resizeTo(690, 210)
                 Game.resize()
-                console.log(STPtries)
                 if(!Game.HasAchiev(`Stifling the press`)) AutoCookie.clickNewsTicker();
                 if(Game.HasAchiev(`Cookie-dunker`)) {
                     STPtries++
