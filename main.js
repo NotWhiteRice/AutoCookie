@@ -41,6 +41,7 @@ AutoCookie.loader.timeoutDuration = 5000
         if (Game && Game.ready) {
             clearInterval(interval)
             interval = 0
+            if(Game.version != AutoCookie.gameVersion) Game.Notify(`ACLoader--version mismatch`, `AutoCookie was created for Cookie Clicker v${AutoCookie.gameVersion}, and may not work as intended.`, [32, 0])
             declareDeps()
             fetchAndLoad()
         }
@@ -48,6 +49,7 @@ AutoCookie.loader.timeoutDuration = 5000
 
     let declareDeps = function() {
         new Module(`bot-main.js`, true)
+        new Module(`autocookie-main.js`, true)
         new Module(`bot-garden.js`, false)
     }
 
