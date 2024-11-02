@@ -111,7 +111,11 @@ AutoCookie.loader.timeoutDuration = 5000
                                 throw error
                             }
                         }, 1);
-                        AutoCookie.onInit();
+
+                        if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required", [11,14])
+
+                        if(AutoCookie.isRunning()) Game.Notify(`AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion} successfully loaded!`,'',[16,5])
+                        else Game.Notify(`Unable to load AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion}`,'',[16,5])
                     },
                     save:function() {},
                     load:function() {},
