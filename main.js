@@ -107,6 +107,7 @@ AutoCookie.loader.timeoutDuration = 5000
                                 AutoCookie.runScript()
                             } catch(error) {
                                 AutoCookie.errorCode = 4
+                                AutoCookie.kill()
                                 throw error
                             }
                         }, 1);
