@@ -102,7 +102,14 @@ AutoCookie.loader.timeoutDuration = 5000
             try {
                 Game.registerMod("autoCookie", {
                     init:function() {
-                        interval = setInterval(AutoCookie.runScript, 1);
+                        interval = setInterval(() => {
+                            try {
+                                AutoCookie.runScript()
+                            } catch(error) {
+                                AutoCookie.errorCode = 4
+                                throw error
+                            }
+                        }, 1);
                         AutoCookie.onInit();
                     },
                     save:function() {},
@@ -149,7 +156,8 @@ AutoCookie.loader.timeoutDuration = 5000
             }
             msg = `Failed to load a critical dependency '${dependency}'--${prompt}`
         } else if(errorCode == 2) msg = `Unable to fetch dependencies within ${AutoCookie.loader.timeoutDuration}ms--${prompt}`
-        else if(errorCode == 3) msg = `Encountered a runtime error when executing AutoCookie--${prompt}`
+        else if(errorCode == 3) msg = `Encountered a runtime error on startup--${prompt}`
+        else if(errorCode == 4) msg = `Encountered a runtime error during execution--${prompt}`
         else msg = `Encountered unknown error code: ${errorCode}--${prompt}`
 
         Game.Notify(`AutoCookie error code: ${AutoCookie.errorCode}`, msg, [32, 20])

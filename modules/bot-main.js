@@ -23,7 +23,6 @@ AutoCookie.onInit = function() {
    Crude script with auto-buy and getting miscellaneous achievements
 ---------------------------------------------------------
 */
-AutoCookie.interval = 0;
 AutoCookie.pauseBot = false;
 AutoCookie.killBot = false;
 AutoCookie.bestPurchase = "";
@@ -33,12 +32,10 @@ AutoCookie.testCPS = false
 AutoCookie.isTesting = false
 
 AutoCookie.onInit = function() {
-    AutoCookie.interval = setInterval(AutoCookie.runScript, 1);
-
     if(!Game.HasAchiev('Cookie-dunker') || !Game.HasAchiev('Stifling the press')) Game.Notify('AutoCookie Prompt', "Please make sure the window is not maximized, so the bot can get 'Cookie-dunker' and 'Stifling the press'. This should be the only time user-input be required", [11,14])
     
-    if(AutoCookie.interval != 0) Game.Notify(`AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion} successfully loaded!`,'',[16,5])
-    else Game.Notify(`Unable to load AutoCookie`,'',[16,5])
+    if(AutoCookie.isRunning()) Game.Notify(`AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion} successfully loaded!`,'',[16,5])
+    else Game.Notify(`Unable to load AutoCookie v${AutoCookie.gameVersion}.${AutoCookie.modVersion}`,'',[16,5])
 }
 
 AutoCookie.calcBuildingPayout = function(building) {
