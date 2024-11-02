@@ -9,13 +9,8 @@ AutoCookie.loader = {}
 AutoCookie.loader.timeoutDuration = 5000
 
 {
+    let interval = 0
     let dependencies = []
-
-    AutoCookie.hasDependency = function(name) {
-        return dependencies.filter((dep) => {
-            return dep.name == name && dep.isLoaded
-        }).length != 0
-    }
 
     class Script {
         isLoaded = false
@@ -37,7 +32,7 @@ AutoCookie.loader.timeoutDuration = 5000
         }
     }
 
-    let interval = setInterval(function () {
+    interval = setInterval(function () {
         if (Game && Game.ready) {
             clearInterval(interval)
             interval = 0
@@ -106,7 +101,10 @@ AutoCookie.loader.timeoutDuration = 5000
 
             try {
                 Game.registerMod("autoCookie", {
-                    init:function() { AutoCookie.onInit(); },
+                    init:function() {
+                        interval = setInterval(AutoCookie.runScript, 1);
+                        AutoCookie.onInit();
+                    },
                     save:function() {},
                     load:function() {},
                 })
@@ -115,29 +113,45 @@ AutoCookie.loader.timeoutDuration = 5000
                 throw error
             }
         }).catch((error) => {
-            let msg = ``
-            const errorCode = AutoCookie.errorCode
-            const prompt = AutoCookie.DEV ? `check console for more details` : `report this to the developer on the Steam workshop or GitHub repo`
-
-            if(errorCode < 0) msg = `AutoCookie was provided with error code ${errorCode}, which is reserved for mod compatibility purposes--don't report this to the AutoCookie developer`
-            else if(errorCode == 0) msg = `Something went wrong while fetching dependencies--${prompt}`
-            else if(errorCode == 1) {
-                let dependency = ``
-                for(i = 0; i < dependencies.length; i++) {
-                    let value = dependencies[i]
-                    if(value.isNeeded && value.failed()) {
-                        dependency = value.name
-                        break
-                    }
-                }
-                msg = `Failed to load a critical dependency '${dependency}'--${prompt}`
-            } else if(errorCode == 2) msg = `Unable to fetch dependencies within ${AutoCookie.loader.timeoutDuration}ms--${prompt}`
-            else if(errorCode == 3) msg = `Encountered a runtime error when executing AutoCookie--${prompt}`
-            else msg = `Encountered unknown error code: ${errorCode} while fetching dependencies--${prompt}`
-
-            Game.Notify(`ACLoader error code: ${AutoCookie.errorCode}`, msg, [32, 20])
-                
+            AutoCookie.kill()
             throw error
         })
+    }
+
+    AutoCookie.hasDependency = function(name) {
+        return dependencies.filter((dep) => {
+            return dep.name == name && dep.isLoaded
+        }).length != 0
+    }
+
+    AutoCookie.isRunning = function() { return interval != 0 }
+
+    AutoCookie.kill = function() {
+        let msg = ``
+        const errorCode = AutoCookie.errorCode
+        const prompt = AutoCookie.DEV ? `check console for more details` : `please report this to the developer on the Steam workshop or GitHub repo`
+
+        if(interval != 0) {
+            clearInterval(interval)
+            interval = 0
+        }
+
+        if(errorCode < 0) msg = `AutoCookie was provided with error code ${errorCode}, which is reserved for mod compatibility purposes--please don't report this to the AutoCookie developer`
+        else if(errorCode == 0) msg = `Either something went wrong or AutoCookie ended peacefully`
+        else if(errorCode == 1) {
+            let dependency = ``
+            for(i = 0; i < dependencies.length; i++) {
+                let value = dependencies[i]
+                if(value.isNeeded && value.failed()) {
+                    dependency = value.name
+                    break
+                }
+            }
+            msg = `Failed to load a critical dependency '${dependency}'--${prompt}`
+        } else if(errorCode == 2) msg = `Unable to fetch dependencies within ${AutoCookie.loader.timeoutDuration}ms--${prompt}`
+        else if(errorCode == 3) msg = `Encountered a runtime error when executing AutoCookie--${prompt}`
+        else msg = `Encountered unknown error code: ${errorCode}--${prompt}`
+
+        Game.Notify(`AutoCookie error code: ${AutoCookie.errorCode}`, msg, [32, 20])
     }
 }

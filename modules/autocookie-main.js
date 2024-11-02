@@ -4,6 +4,15 @@
     }
 
     AutoCookie.tick = function() {
-        if(AutoCookie.errorCode != 0) AutoCookie.killBot = true
+        if(AutoCookie.errorCode != 0) {
+            AutoCookie.killBot = true
+            AutoCookie.kill()
+            return
+        }
+
+        if(AutoCookie.hasDependency(`autocookie-menuing.js`)) {
+            AutoCookie.getMiscAchievs()
+            AutoCookie.fixBakeryName()
+        }
     }
 }

@@ -26,9 +26,6 @@ AutoCookie.onInit = function() {
 AutoCookie.interval = 0;
 AutoCookie.pauseBot = false;
 AutoCookie.killBot = false;
-AutoCookie.dunkTimer = 0;
-AutoCookie.windowW = 0;
-AutoCookie.windowH = 0;
 AutoCookie.bestPurchase = "";
 AutoCookie.purchaseType = "";
 
@@ -62,10 +59,6 @@ AutoCookie.runScript = function() {
 
     if(AutoCookie.isOnMainScreen()) {
         if(Game.shimmers.length > 0) AutoCookie.clickGCs()
-        if(AutoCookie.hasDependency(`autocookie-menuing.js`)) {
-            AutoCookie.getMiscAchievs()
-            AutoCookie.fixBakeryName()
-        }
 
         if(AutoCookie.testCPS) {
             let timeout = 0
