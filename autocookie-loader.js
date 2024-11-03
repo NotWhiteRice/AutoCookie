@@ -49,7 +49,6 @@ AutoCookie.error = {
         Game.Notify('ACLoader--fetching dependencies', `Fetching ${dependencies.length+1} dependencies`, [32, 0])
 
         let jquery = document.createElement('script')
-        jquery.setAttribute("type", "text/javascript")
         jquery.setAttribute('src', 'https://code.jquery.com/jquery-3.7.1.min.js')
         jquery.setAttribute('integrity', 'sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=')
         jquery.setAttribute('crossorigin', 'anonymous')
@@ -88,7 +87,7 @@ AutoCookie.error = {
             throw error
         }
     }
-
+    
     AutoCookie.isRunning = function() { return interval != 0 }
 
     AutoCookie.kill = function() {
