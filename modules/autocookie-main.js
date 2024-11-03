@@ -87,7 +87,7 @@ AutoCookie.onInit = function() {
             if(Game.cookiesPs != 0) {
                 let bestPayout = 0
                 let sendPrompt = false
-                if(goal != "") bestPayout = calcBuildingPayout(Game.Objects[AutoCookie.bestPurchase])
+                if(goal != "") bestPayout = calcBuildingPayout(Game.Objects[goal])
                 Object.values(Game.Objects).forEach(function(building) {
                     let payout = calcBuildingPayout(building)
                     if(payout < bestPayout || bestPayout == 0) {
