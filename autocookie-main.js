@@ -40,15 +40,23 @@ AutoCookie.onInit = function() {
     }
 
     AutoCookie.tick = function() {
+        if(AutoCookie.errorCode != 0) {
+            AutoCookie.pauseBot = true
+            AutoCookie.kill()
+            return
+        }
+
+        if(AutoCookie.hasDependency(`autocookie-menuing.js`)) {
+            AutoCookie.getMiscAchievs()
+            AutoCookie.fixBakeryName()
+        }
+
         if(Date.now() > clicksClock + 1000) {
             clicksClock = Date.now()
             trackedClicks.push(runningClicks)
             runningClicks = 0
             while(trackedClicks.length > secsToTrackClicks) trackedClicks.shift()
         }
-
-        AutoCookie.getMiscAchievs()
-        AutoCookie.fixBakeryName()
 
         if(AutoCookie.isOnMainScreen()) {
             let clickLimit = -1, cookieLimit = -1, timeLimit = -1
