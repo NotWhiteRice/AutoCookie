@@ -73,35 +73,33 @@
         // Restoring the previously open menu
         if(Game.onMenu != oldMenu) openMenu(oldMenu)
 
-        if(!!App) {
-            // Making the window smaller to get 'Cookie-dunker' and 'Stifling the press'
-            if(!Game.HasAchiev(`Cookie-dunker`) || !Game.HasAchiev(`Stifling the press`)) {
-                if(dunkClock == 0 && STPtries == 0) {
-                    windowW = window.outerWidth;
-                    windowH = window.outerHeight;
-                }
-                if((window.screenX != 0 || window.screenY != 0) && STPtries < 10) {
-                    window.resizeTo(690, 210)
-                    Game.resize()
-                    if(!Game.HasAchiev(`Stifling the press`)) AutoCookie.clickNewsTicker();
-                    if(Game.HasAchiev(`Cookie-dunker`)) {
-                        STPtries++
-                        window.resizeTo(windowW, windowH)
-                        Game.resize()
-                    } else dunkClock++
-                }
-                if(STPtries == 10 && !Game.HasAchiev(`Stifling the press`)) {
-                    Game.Notify(`AutoCookie prompt`, `Unable to obtain 'Stifling the press'--please report this on the Steam workshop page or GitHub repo`, [])
-                }
+        // Making the window smaller to get 'Cookie-dunker' and 'Stifling the press'
+        if(!Game.HasAchiev(`Cookie-dunker`) || !Game.HasAchiev(`Stifling the press`)) {
+            if(dunkClock == 0 && STPtries == 0) {
+                windowW = window.outerWidth;
+                windowH = window.outerHeight;
             }
-
-            // Restoring the old window size if not done already
-            if(Game.HasAchiev(`Cookie-dunker`) && Game.HasAchiev(`Stifling the press`) && dunkClock > 0) {
-                dunkClock = 0;
-                window.resizeTo(windowW, windowH)
+            if((window.screenX != 0 || window.screenY != 0) && STPtries < 10) {
+                window.resizeTo(690, 210)
                 Game.resize()
-            }    
+                if(!Game.HasAchiev(`Stifling the press`)) AutoCookie.clickNewsTicker();
+                if(Game.HasAchiev(`Cookie-dunker`)) {
+                    STPtries++
+                    window.resizeTo(windowW, windowH)
+                    Game.resize()
+                } else dunkClock++
+            }
+            if(STPtries == 10 && !Game.HasAchiev(`Stifling the press`)) {
+                Game.Notify(`AutoCookie prompt`, `Unable to obtain 'Stifling the press'--please report this on the Steam workshop page or GitHub repo`, [])
+            }
         }
+
+        // Restoring the old window size if not done already
+        if(Game.HasAchiev(`Cookie-dunker`) && Game.HasAchiev(`Stifling the press`) && dunkClock > 0) {
+            dunkClock = 0;
+            window.resizeTo(windowW, windowH)
+            Game.resize()
+        }    
 
         // Getting 'Tabloid addiction'
         if(!Game.HasAchiev(`Tabloid addiction`)) for(i = 0; i < 50; i++) AutoCookie.clickNewsTicker();
