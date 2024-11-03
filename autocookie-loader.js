@@ -46,7 +46,7 @@ AutoCookie.error = {
     }, 1000);
 
     let startLoader = function() {
-        Game.Notify('ACLoader--fetching dependencies', `Fetching ${scripts.length+1} dependencies`, [32, 0])
+        Game.Notify('ACLoader--fetching dependencies', `Fetching ${dependencies.length+1} dependencies`, [32, 0])
 
         let jquery = document.createElement('script')
         jquery.setAttribute("type", "text/javascript")

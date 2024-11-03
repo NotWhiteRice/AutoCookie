@@ -1,1 +1,1 @@
-Game.LoadMod("https://notwhiterice.github.io/AutoCookie/autocookie-loader.js")
+Game.LoadMod("https://github.com/NotWhiteRice/AutoCookie/tree/main/autocookie-loader.js")
