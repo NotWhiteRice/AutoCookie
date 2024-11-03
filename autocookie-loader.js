@@ -41,7 +41,7 @@ AutoCookie.gameVersion = 2.052
         jquery.setAttribute('crossorigin', 'anonymous')
         jquery.onload = function() { loadScript(0) }
 
-        document.appendChild(jquery)
+        document.head.appendChild(jquery)
     }
 
     let startAutoCookie = function() {
